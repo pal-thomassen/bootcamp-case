@@ -78,36 +78,36 @@ public class TweetProducer {
             String msg = msgQueue.take();
             JsonParser jsonParser = Json.createParser(new ByteArrayInputStream(msg.getBytes(StandardCharsets.UTF_8)));
 
-
-            if (containsCoordinates(jsonParser)) {
-                insertToEventStore(httpClient, msg);
+            String country = getCountry(jsonParser);
+            if (!country.isEmpty()) {
+                insertToEventStore(httpClient, msg, country);
             }
-
         }
 
         httpClient.close();
         hosebirdClient.stop();
     }
 
-    private static boolean containsCoordinates(JsonParser jsonParser) {
+    private static String getCountry(JsonParser jsonParser) {
         while(jsonParser.hasNext()) {
             JsonParser.Event event = jsonParser.next();
-            if (event == JsonParser.Event.KEY_NAME && "coordinates".equals(jsonParser.getString())) {
-                JsonParser.Event coordinates = jsonParser.next();
-                if (coordinates != JsonParser.Event.VALUE_NULL) {
-                    return true;
+            if (event == JsonParser.Event.KEY_NAME && "country_code".equals(jsonParser.getString())) {
+                JsonParser.Event country = jsonParser.next();
+                if (country != JsonParser.Event.VALUE_NULL) {
+                    return jsonParser.getString();
                 }
 
-                // We stop at first coordinates, hacky but works for bootcamp
+                // We stop at first country_code, hacky but works for bootcamp
                 break;
             }
         }
-        return false;
+        return "";
     }
 
-    private static void insertToEventStore(CloseableHttpClient httpClient, String msg) throws UnsupportedEncodingException {
+    private static void insertToEventStore(CloseableHttpClient httpClient, String msg, String country) throws UnsupportedEncodingException {
         String guid = UUID.randomUUID().toString();
-        HttpPost httpPost = new HttpPost("http://localhost:2113/streams/twitter/incoming/" + guid);
+        country = country.replace(" ", "%20");
+        HttpPost httpPost = new HttpPost("http://localhost:2113/streams/twitter-" + country + "/incoming/" + guid);
         httpPost.setHeader(new BasicHeader("Content-type", "application/json"));
         httpPost.setHeader(new BasicHeader("ES-EventType", "newtweet"));
 
@@ -115,7 +115,6 @@ public class TweetProducer {
         try {
             CloseableHttpResponse response = httpClient.execute(httpPost);
             response.close();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
