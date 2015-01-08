@@ -21,7 +21,12 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.client.LaxRedirectStrategy;
 import org.apache.http.message.BasicHeader;
 
+import javax.json.Json;
+import javax.json.stream.JsonParser;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
@@ -71,29 +76,48 @@ public class TwitterTest {
         // on a different thread, or multiple different threads....
         while (!hosebirdClient.isDone()) {
             String msg = msgQueue.take();
+            JsonParser jsonParser = Json.createParser(new ByteArrayInputStream(msg.getBytes(StandardCharsets.UTF_8)));
 
 
-            String guid = UUID.randomUUID().toString();
-            HttpPost httpPost = new HttpPost("http://localhost:2113/streams/twittertest/incoming/" + guid);
-            httpPost.setHeader(new BasicHeader("Content-type", "application/json"));
-            httpPost.setHeader(new BasicHeader("ES-EventType", "newtweet"));
-
-
-            httpPost.setEntity(new StringEntity(msg));
-            try {
-                CloseableHttpResponse response = httpClient.execute(httpPost);
-                response.close();
-
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (containsCoordinates(jsonParser)) {
+                insertToEventStore(httpClient, msg);
             }
 
         }
 
-        System.out.println("After while");
-
         httpClient.close();
-
         hosebirdClient.stop();
+    }
+
+    private static boolean containsCoordinates(JsonParser jsonParser) {
+        while(jsonParser.hasNext()) {
+            JsonParser.Event event = jsonParser.next();
+            if (event == JsonParser.Event.KEY_NAME && "coordinates".equals(jsonParser.getString())) {
+                JsonParser.Event coordinates = jsonParser.next();
+                if (coordinates != JsonParser.Event.VALUE_NULL) {
+                    return true;
+                }
+
+                // We stop at first coordinates, hacky but works for bootcamp
+                break;
+            }
+        }
+        return false;
+    }
+
+    private static void insertToEventStore(CloseableHttpClient httpClient, String msg) throws UnsupportedEncodingException {
+        String guid = UUID.randomUUID().toString();
+        HttpPost httpPost = new HttpPost("http://localhost:2113/streams/twitter/incoming/" + guid);
+        httpPost.setHeader(new BasicHeader("Content-type", "application/json"));
+        httpPost.setHeader(new BasicHeader("ES-EventType", "newtweet"));
+
+        httpPost.setEntity(new StringEntity(msg));
+        try {
+            CloseableHttpResponse response = httpClient.execute(httpPost);
+            response.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
