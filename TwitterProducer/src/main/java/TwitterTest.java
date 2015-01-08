@@ -9,7 +9,6 @@ import com.twitter.hbc.core.event.Event;
 import com.twitter.hbc.core.processor.StringDelimitedProcessor;
 import com.twitter.hbc.httpclient.auth.Authentication;
 import com.twitter.hbc.httpclient.auth.OAuth1;
-import org.apache.http.Header;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
@@ -72,6 +71,8 @@ public class TwitterTest {
         // on a different thread, or multiple different threads....
         while (!hosebirdClient.isDone()) {
             String msg = msgQueue.take();
+
+
             String guid = UUID.randomUUID().toString();
             HttpPost httpPost = new HttpPost("http://localhost:2113/streams/twittertest/incoming/" + guid);
             httpPost.setHeader(new BasicHeader("Content-type", "application/json"));
