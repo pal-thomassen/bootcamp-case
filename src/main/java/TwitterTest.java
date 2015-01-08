@@ -24,6 +24,7 @@ import org.apache.http.message.BasicHeader;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -69,10 +70,10 @@ public class TwitterTest {
                 .build();
 
         // on a different thread, or multiple different threads....
-        HttpPost httpPost;
         while (!hosebirdClient.isDone()) {
             String msg = msgQueue.take();
-            httpPost = new HttpPost("http://localhost:2113/streams/twittertest");
+            String guid = UUID.randomUUID().toString();
+            HttpPost httpPost = new HttpPost("http://localhost:2113/streams/twittertest/incoming/" + guid);
             httpPost.setHeader(new BasicHeader("Content-type", "application/json"));
             httpPost.setHeader(new BasicHeader("ES-EventType", "newtweet"));
 
@@ -80,18 +81,15 @@ public class TwitterTest {
             httpPost.setEntity(new StringEntity(msg));
             try {
                 CloseableHttpResponse response = httpClient.execute(httpPost);
-                System.out.println(response.getStatusLine());
-                Header[] headers = response.getAllHeaders();
-                for (Header header: headers) {
-                    System.out.println(header.toString());
-                }
+                response.close();
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            System.out.println("Tweet posted!");
         }
+
+        System.out.println("After while");
 
         httpClient.close();
 
