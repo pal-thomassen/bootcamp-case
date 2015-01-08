@@ -32,7 +32,7 @@ import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class TwitterTest {
+public class TweetProducer {
 
     public static void main(String[] args) throws InterruptedException, IOException {
         /** Set up your blocking queues: Be sure to size these properly based on expected TPS of your stream */
