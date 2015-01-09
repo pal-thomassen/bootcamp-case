@@ -1,25 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id="bootcamp-case" external.linked.project.path="$MODULE_DIR$" external.root.project.path="$MODULE_DIR$" external.system.id="GRADLE" external.system.module.group="" external.system.module.version="1.0" type="JAVA_MODULE" version="4">
-  <component name="NewModuleRootManager" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/build" />
-    <output-test url="file://$MODULE_DIR$/build" />
+<module external.linked.project.path="$MODULE_DIR$" external.root.project.path="$MODULE_DIR$" external.system.id="GRADLE" external.system.module.group="" external.system.module.version="1.0" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/.gradle" />
+      <excludeFolder url="file://$MODULE_DIR$/build" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="Gradle: com.twitter:hbc-core:2.2.0" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: org.apache.httpcomponents:httpclient:4.3.6" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: org.slf4j:slf4j-api:1.6.6" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: com.twitter:joauth:6.0.2" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: com.google.code.findbugs:jsr305:1.3.9" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: org.apache.httpcomponents:httpcore:4.3.3" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: commons-logging:commons-logging:1.1.3" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: commons-codec:commons-codec:1.6" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: com.google.guava:guava:15.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: junit:junit:4.11" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: javax.json:javax.json-api:1.0" level="project" />
   </component>
 </module>
+
