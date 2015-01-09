@@ -241,27 +241,50 @@ var countries = [
     ['ZW', -20.0000, 30.0000]
 ];
 
+function findLatLonFromCountryCode(countryCode) {
+  var latlon;
+  countries.forEach(function(country) {
+    if (country[0] === countryCode) {
+      latlon = {lat: country[1], lon: country[2]};
+    }
+  });
+  return latlon;
+}
+
 
 function initialize() {
-    var mapOptions = {
-        center: { lat: 0, lng: 0},
-        zoom: 4
-    };
-    var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+  map = new google.maps.Map(document.getElementById('map-canvas'), {
+    center: {lat: 0, lng: 0},
+    zoom: 3
+  });
+}
 
-    countries.forEach(function (countryArray) {
-        var countryCode = countryArray[0];
-        var lat = countryArray[1];
-        var lng = countryArray[2];
-        var myLatlng = new google.maps.LatLng(lat, lng);
-        console.log(countryCode);
-        var marker = new google.maps.Marker({
-            position: myLatlng,
-            map: map,
-            title: countryCode
-        });
+var markers = {};
+
+var numberOfTweets = {}
+
+function tweetSuccess(response, countryCode) {
+  var json = JSON.parse(response);
+  var number = json.entries.length;
+  if (!numberOfTweets[countryCode]) {
+    numberOfTweets[countryCode] = 0;
+    var latlon = findLatLonFromCountryCode(countryCode);
+    var myLatlng = new google.maps.LatLng(latlon.lat, latlon.lon);
+    var marker = new google.maps.Marker({
+      position: myLatlng,
+      map: map,
+      title: countryCode,
+      animation: google.maps.Animation.DROP
     });
-
+    markers[countryCode] = marker;
+  }
+  numberOfTweets[countryCode] = numberOfTweets[countryCode] + number;
+  markers[countryCode].title = numberOfTweets[countryCode];
+  json.links.forEach(function(link) {
+    if (link.relation == "next") {
+      tweetFetcher(link.uri, countryCode);
+    }
+  });
     bindSliderEvents();
 }
 
@@ -271,3 +294,20 @@ function bindSliderEvents() {
 
 google.maps.event.addDomListener(window, 'load', initialize);
 
+function tweetFetcher(uri, countryCode) {
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      tweetSuccess(xhr.response, countryCode);
+    }
+  }
+  xhr.open("GET", uri, true);
+  xhr.setRequestHeader("accept", "application/json");
+  xhr.send();
+};
+
+countries.forEach(function(country) {
+  tweetFetcher("http://localhost:2113/streams/twitter-" + country[0], country[0]);
+});
+
+google.maps.event.addDomListener(window, 'load', initialize);
