@@ -289,7 +289,12 @@ function tweetSuccess(response, countryCode) {
 }
 
 function bindSliderEvents() {
-    $("#slider").slider();
+    $("#slider").slider({
+      step: 5,
+      slide: function( event, ui ) {
+        console.log(ui.value);
+      }
+    });
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
