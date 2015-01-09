@@ -33,6 +33,8 @@ public class ElasticSearchService {
     */
 
     public static void main(String[] args) {
+        System.setProperty("es.http.cors.enabled", "true");
+        System.setProperty("es.http.cors.allow-origin", "*");
         Elasticsearch.main(new String[0]);
     }
 

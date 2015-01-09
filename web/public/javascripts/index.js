@@ -321,3 +321,11 @@ countries.forEach(function(country) {
 });
 
 google.maps.event.addDomListener(window, 'load', initialize);
+
+
+window.ob.findActivityInCountriesBetween(0, new Date().getTime(), function (activityInCountry) {
+    for (var country in activityInCountry) {
+        var activity = activityInCountry[country];
+        console.log(country + " - " + activity);
+    }
+});
