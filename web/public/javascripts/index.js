@@ -245,7 +245,7 @@ var countries = [
 function initialize() {
     var mapOptions = {
         center: { lat: 0, lng: 0},
-        zoom: 3
+        zoom: 4
     };
     var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
@@ -262,6 +262,12 @@ function initialize() {
         });
     });
 
+    bindSliderEvents();
 }
+
+function bindSliderEvents() {
+    $("#slider").slider();
+}
+
 google.maps.event.addDomListener(window, 'load', initialize);
 
