@@ -1,0 +1,44 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   'git://github.com/kenpratt/nodejs-EventStore.git' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.35
+4 verbose readDependencies using package.json deps
+5 verbose cache add [ 'git://github.com/kenpratt/nodejs-EventStore.git', null ]
+6 verbose cache add name=undefined spec="git://github.com/kenpratt/nodejs-EventStore.git" args=["git://github.com/kenpratt/nodejs-EventStore.git",null]
+7 verbose parsed url { protocol: 'git:',
+7 verbose parsed url   slashes: true,
+7 verbose parsed url   auth: null,
+7 verbose parsed url   host: 'github.com',
+7 verbose parsed url   port: null,
+7 verbose parsed url   hostname: 'github.com',
+7 verbose parsed url   hash: null,
+7 verbose parsed url   search: null,
+7 verbose parsed url   query: null,
+7 verbose parsed url   pathname: '/kenpratt/nodejs-EventStore.git',
+7 verbose parsed url   path: '/kenpratt/nodejs-EventStore.git',
+7 verbose parsed url   href: 'git://github.com/kenpratt/nodejs-EventStore.git' }
+8 silly lockFile 63ab938b-m-kenpratt-nodejs-EventStore-git git://github.com/kenpratt/nodejs-EventStore.git
+9 verbose lock git://github.com/kenpratt/nodejs-EventStore.git /Users/janbergeommedal/.npm/63ab938b-m-kenpratt-nodejs-EventStore-git.lock
+10 verbose addRemoteGit [ 'git://github.com/kenpratt/nodejs-EventStore.git', 'master' ]
+11 silly lockFile 63ab938b-m-kenpratt-nodejs-EventStore-git git://github.com/kenpratt/nodejs-EventStore.git
+12 silly lockFile 63ab938b-m-kenpratt-nodejs-EventStore-git git://github.com/kenpratt/nodejs-EventStore.git
+13 error Error: EACCES, mkdir '/Users/janbergeommedal/.npm/_git-remotes/git-github-com-kenpratt-nodejs-EventStore-git-63ab938b'
+13 error  { [Error: EACCES, mkdir '/Users/janbergeommedal/.npm/_git-remotes/git-github-com-kenpratt-nodejs-EventStore-git-63ab938b']
+13 error   errno: 3,
+13 error   code: 'EACCES',
+13 error   path: '/Users/janbergeommedal/.npm/_git-remotes/git-github-com-kenpratt-nodejs-EventStore-git-63ab938b',
+13 error   parent: 'web2' }
+14 error Please try running this command again as root/Administrator.
+15 error System Darwin 14.0.0
+16 error command "node" "/usr/local/bin/npm" "install" "git://github.com/kenpratt/nodejs-EventStore.git"
+17 error cwd /Users/janbergeommedal/development/bootcamp/bootcamp-case/web2
+18 error node -v v0.10.35
+19 error npm -v 1.4.28
+20 error path /Users/janbergeommedal/.npm/_git-remotes/git-github-com-kenpratt-nodejs-EventStore-git-63ab938b
+21 error code EACCES
+22 error errno 3
+23 error stack Error: EACCES, mkdir '/Users/janbergeommedal/.npm/_git-remotes/git-github-com-kenpratt-nodejs-EventStore-git-63ab938b'
+24 verbose exit [ 3, true ]
