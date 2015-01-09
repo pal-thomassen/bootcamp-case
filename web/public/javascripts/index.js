@@ -270,16 +270,21 @@ function tweetSuccess(response, countryCode) {
     numberOfTweets[countryCode] = 0;
     var latlon = findLatLonFromCountryCode(countryCode);
     var myLatlng = new google.maps.LatLng(latlon.lat, latlon.lon);
-    var marker = new google.maps.Marker({
+    var marker = new MarkerWithLabel({
       position: myLatlng,
       map: map,
       title: countryCode,
+      labelContent: "",
+      labelAnchor: new google.maps.Point(3, 30),
+      labelClass: "labels", // the CSS class for the label
+      labelInBackground: false,
       animation: google.maps.Animation.DROP
     });
     markers[countryCode] = marker;
   }
   numberOfTweets[countryCode] = numberOfTweets[countryCode] + number;
   markers[countryCode].title = numberOfTweets[countryCode];
+  markers[countryCode].labelContent = numberOfTweets[countryCode];
   json.links.forEach(function(link) {
     if (link.relation == "next") {
       tweetFetcher(link.uri, countryCode);
