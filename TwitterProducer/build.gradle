@@ -1,0 +1,8 @@
+apply plugin: 'java'
+
+dependencies {
+    compile 'com.twitter:hbc-core:2.2.0'
+    compile 'org.apache.httpcomponents:httpclient:4.3.6'
+    compile 'javax.json:javax.json-api:1.0'
+    compile 'org.glassfish:javax.json:1.0.4'
+}

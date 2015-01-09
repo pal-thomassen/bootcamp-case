@@ -1,2 +1,4 @@
 rootProject.name = 'bootcamp-case'
 
+include 'TwitterProducer'
+
